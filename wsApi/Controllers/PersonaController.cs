@@ -58,7 +58,7 @@ namespace wsApi.Controllers
         }
 
         [HttpPost("PostPersona")]
-        public async Task<ActionResult> PostPersona(Persona persona) 
+        public async Task<ActionResult> PostPersona(Persona persona)
         {
             try
             {
@@ -73,5 +73,38 @@ namespace wsApi.Controllers
             }
         }
 
+        [HttpPut("UpdatePersona")]
+        public async Task<ActionResult> PutPersona(Persona persona)
+        {
+            try
+            {
+                _context.Personas.Update(persona);
+                await _context.SaveChangesAsync();
+                return Ok("Se ha actualizado la informacion de la persona !!!");
+
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "ha ocurrido un error " + ex.Message);
+            }
+        }
+
+        [HttpDelete("DeletePersona")]
+        public async Task<ActionResult> DeletePersona(int personaId)
+        {
+            try
+            {
+                var query = _context.Personas.FirstOrDefault(x => x.personaId == personaId);
+                _context.Personas.Remove(query);
+                await _context.SaveChangesAsync();
+                return Ok("Se ha removido a la persona del sistema");
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "ha ocurrido un error " + ex.Message);
+            }
+        }
     }
 }
